@@ -59,6 +59,8 @@ class MailTrackerController extends Controller
                 RecordLinkClickJob::dispatch($tracker, $url, request()->ip())
                     ->onQueue(config('mail-tracker.tracker-queue'));
 
+                MailTracker::queueConversionCookie($tracker->id);
+
                 // If no opened at but has a clicked event then we can assume that it was in fact opened, the tracking pixel may have been blocked
                 if (config('mail-tracker.inject-pixel') && !$tracker->opened_at) {
                     $tracker->opened_at = now();

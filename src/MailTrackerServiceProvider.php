@@ -110,6 +110,13 @@ class MailTrackerServiceProvider extends ServiceProvider
         Route::group($config, function () {
             Route::get('t/{hash}', 'MailTrackerController@getT')->name('mailTracker_t');
             Route::get('n', 'MailTrackerController@getN')->name('mailTracker_n')->middleware(ValidateSignature::class);
+        });
+
+        // Install the SNS routes
+        $sns_route              = $this->app['config']->get('mail-tracker.sns-route', []);
+        $sns_route['namespace'] = 'jdavidbakr\MailTracker';
+
+        Route::group($sns_route, function () {
             Route::post('sns', 'SNSController@callback')->name('mailTracker_SNS');
         });
 

@@ -101,6 +101,24 @@ class MailTracker
     }
 
     /**
+     * Queue the conversion cookie with the given sent_email id.
+     *
+     * @param int $sentEmailId
+     * @return void
+     */
+    public static function queueConversionCookie(int $sentEmailId): void
+    {
+        if (!config('mail-tracker.track_conversions')) {
+            return;
+        }
+
+        $cookieName = config('mail-tracker.conversion_cookie_name');
+        $cookieTtl = config('mail-tracker.conversion_cookie_lifetime');
+
+        cookie()->queue(cookie($cookieName, $sentEmailId, $cookieTtl));
+    }
+
+    /**
      * Inject the tracking code into the message
      */
     public function messageSending(MessageSending $event)

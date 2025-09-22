@@ -21,13 +21,21 @@ return [
      */
     'route'                     => [
         'prefix'     => 'email',
-        'middleware' => ['api'],
+        'middleware' => ['web'],
     ],
 
     /**
      * If we get a link click without a URL, where should we send it to?
      */
     'redirect-missing-links-to' => '/',
+
+    /**
+     * Where should the SNS route be?
+     */
+    'sns-route'                     => [
+        'prefix'     => 'email',
+        'middleware' => ['api'],
+    ],
 
     /**
      * Where should the admin route be?
@@ -110,5 +118,21 @@ return [
      */
     'fallback-event-listeners' => [
         \jdavidbakr\MailTracker\Listener\DomainExistsInContentListener::class,
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Conversion Tracking
+    |--------------------------------------------------------------------------
+    |
+    | Enable tracking of conversions. When enabled, a cookie will be set when
+    | a user clicks a tracked email link. You can later record conversions
+    | tied to that sent_email ID.
+    |
+    */
+    'track_conversions' => env('MAIL_TRACKER_CONVERSIONS', false),
+
+    'conversion_cookie_name' => 'mail_tracker_email_id',
+
+    'conversion_cookie_lifetime' => 60 * 24 * 365,
 ];
